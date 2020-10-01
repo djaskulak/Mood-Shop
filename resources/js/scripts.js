@@ -90,5 +90,22 @@ function getTotal (){
   return total.toFixed(2);
 }
 
+//creating a function to remove items from the cart
+function removeItem (name, qty = 0){
+  for (let i = 0; i < cart.length; i += 1) {
+    if (cart[i].name === name) {
+      if(qty > 0) {
+        cart[i].qty -= qty;
+      }
+
+      if (cart[i].qty < 1 || qty === 0){
+        cart.splice(i, 1);
+      }
+
+      return;
+    }
+  }
+}
+
 //calling the function so we can see our items
 showItems();
