@@ -11,10 +11,6 @@ const cartTotal = document.getElementById('cart-total');
 
 const cart = [];
 
-const obj = {};
-
-console.log(obj);
-
 // the length of our data determines how many times this loop goes around
 for (let i=0; i<data.length; ++i) {
   let newDiv = document.createElement('div');
@@ -62,6 +58,7 @@ function addItem (name, price) {
 function showItems () {
   //display how many items are in the cart
   console.log(`You have ${getQty()} items in your cart`);
+  cartQty.innerHTML = `You have ${getQty()} items in your cart`;
 
   let itemStr = '';
   
@@ -69,7 +66,10 @@ function showItems () {
   for (let i = 0; i < cart.length; i +=1){
     const { name, price, qty } = cart[i];
 
-    itemStr += `<li>${name} $${price} x ${qty} = $${qty * price}</li>`;
+    itemStr += `<li>
+      ${name} $${price} x ${qty} = $${qty * price}
+      <button class="remove" data-name="${name}">Remove</button>
+      </li>`;
   }
 
   itemList.innerHTML = itemStr;
@@ -91,7 +91,7 @@ function getQty (){
   //calculate the qty of each item in the cart and display it
   let qty = 0;
   for (let i = 0; i < cart.length; i +=1){
-    qty += cart[i].qty;
+    qty += parseFloat(cart[i].qty);
   }
   return qty;
 }
