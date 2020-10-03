@@ -1,15 +1,20 @@
-const itemsContainer = document.getElementById('items')
 import data from './data.js'
 
+const itemsContainer = document.getElementById('items')
 const itemList = document.getElementById('item-list');
-itemList.innerHTML = '<li> Hello World</li>';
-console.log(itemList);
-
 const cartQty = document.getElementById('cart-qty');
-
 const cartTotal = document.getElementById('cart-total');
 
 const cart = [];
+
+// function to handle clicks on list
+itemList.onclick = function(e) {
+  console.log(e.target);
+  if (e.target && e.target.classList.contains('remove')) {
+    const name = e.target.dataset.name;
+    removeItem(name);
+  }
+}
 
 // the length of our data determines how many times this loop goes around
 for (let i=0; i<data.length; ++i) {
@@ -46,12 +51,13 @@ function addItem (name, price) {
   for (let i = 0; i < cart.length; i += 1) {
     if (cart[i].name === name) {
       cart[i].qty += 1;
+      showItems();
       return;
     }
   }
 
   const item = {name: name, price: price, qty: 1};
-  cart.push(name);
+  cart.push({name, price, qty: 1});
 }
 
 //function that shows items in the cart
@@ -73,6 +79,7 @@ function showItems () {
   }
 
   itemList.innerHTML = itemStr;
+  console.log(itemStr);
 
   //display the total amount in the cart
   console.log(`Total in cart: ${getTotal()}`);
@@ -117,7 +124,7 @@ function removeItem (name, qty = 0){
       if (cart[i].qty < 1 || qty === 0){
         cart.splice(i, 1);
       }
-
+      showItems();
       return;
     }
   }
