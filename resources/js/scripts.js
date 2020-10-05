@@ -7,12 +7,27 @@ const cartTotal = document.getElementById('cart-total');
 
 const cart = [];
 
+// handle change event on update input
+itemList.onchange = function(e) {
+  if (e.target && e.target.classList.contains('update')) {
+    const name = e.target.dataset.name;
+    const qty = parseInt(e.target.value);
+    updateCart(name, qty);
+  }
+}
+
 // function to handle clicks on list
 itemList.onclick = function(e) {
   console.log(e.target);
   if (e.target && e.target.classList.contains('remove')) {
     const name = e.target.dataset.name;
     removeItem(name);
+  } else if (e.target && e.target.classList.contains('add-one')) {
+    const name = e.target.dataset.name;
+    addItem(name);
+  } else if (e.target && e.target.classList.contains('remove-one')) {
+    const name = e.target.dataset.name;
+    removeItem(name, 1);
   }
 }
 
@@ -75,6 +90,9 @@ function showItems () {
     itemStr += `<li>
       ${name} $${price} x ${qty} = $${qty * price}
       <button class="remove" data-name="${name}">Remove</button>
+      <button class="add-one" data-name="${name}"> + </button>
+      <button class="remove-one" data-name="${name}"> - </button>
+      <input class="update type="number data-name="${name}">
       </li>`;
   }
 
@@ -126,6 +144,22 @@ function removeItem (name, qty = 0){
       }
       showItems();
       return;
+    }
+  }
+}
+
+// creating a function to update the quantity of an item from an input
+function updateCart(name, qty) {
+  for (let i = 0; i < cart.length; i += 1) {
+    if (cart[i].name === name) {
+      if (qty < 1) {
+        removeItem(name);
+        return;
+      } else {
+        cart[i].qty = qty;
+        showItems();
+        return;
+      }
     }
   }
 }
